@@ -38,7 +38,8 @@ router.get('/phone',async(req,res)=>{
         if(user){
             return res.status(200).json({
                 status:true,
-                phone:user.phone
+                phone:user?.phone,
+                email:user?.email
             })
         }
         else{
