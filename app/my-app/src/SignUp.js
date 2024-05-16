@@ -43,7 +43,7 @@ import {useParams} from 'react-router-dom'
     const auth = getAuth(app);
     const [user,setuser]=useState()
     const [friend,setfriend]=useState()
-  const [modal,setmodal]=useState(true)
+  const [modal,setmodal]=useState(false)
     const handlePhoneSubmit = async () => {
         try {
 
