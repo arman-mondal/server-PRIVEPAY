@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import { Transactions } from "./transactions/transactions"
 
-const PORT = 4045;
+const PORT = 9090;
 
 const app = express()
 
@@ -37,12 +37,14 @@ const storage = multer.diskStorage({
   
   app.post('/upload', upload.single('file'), (req:any, res) => {
     if (req.file) {
-        const fileUrl = `http://localhost:4045/uploads/${req.file.filename}`;
+        const fileUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`;
         res.json({ fileUrl: fileUrl });
     } else {
         res.status(400).json({ error: 'No file uploaded' });
     }
   });
+
+app.use('/public',express.static(path.join(__dirname,'../public')));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
   app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`)
