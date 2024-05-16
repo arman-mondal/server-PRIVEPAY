@@ -161,6 +161,7 @@ import {useParams} from 'react-router-dom'
 
 
         triggerModal()
+        setotpsent(false)
       } catch (error) {
         console.log(error)
         return error
@@ -174,7 +175,7 @@ const triggerModal=()=>{
       <Modal isOpen={modal} onClose={triggerModal}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Success</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {/* <Lorem count={2} /> */}
