@@ -387,7 +387,7 @@ router.get('/leaderboard/',async(req,res)=>{
             }) 
             const data={
                 id:item.id,
-                identity:item.name===null ? item.phone : item.name,
+                
                 name:item.name,
                 phone:item.phone,
                 balance:item.balance,
