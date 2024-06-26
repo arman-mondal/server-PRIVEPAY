@@ -13,7 +13,14 @@ router.post('/merchant', async (req, res) => {
         const { phone, uid ,name} = req.body;
        const construct={
         active: false,
-        name:name,
+        name:'',
+        images:[],
+        address:'',
+        closingTime:0,
+        openingTime:0,
+        upi:'',
+        category:'Events',
+
     
        
         verified: true,
