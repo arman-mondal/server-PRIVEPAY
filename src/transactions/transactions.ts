@@ -273,12 +273,10 @@ router.get('/filter/user/', async (req, res) => {
         })
         const getNameorPhone=(id:string)=>{
            const fin= merchanthip.filter(item=>item.id===id);
-           if(fin[0].name===undefined){
-            return fin[0].phone
-           }
-           else{
-            return fin[0].name
-           }
+        
+            return fin[0]
+          
+          
         }
         usersDebitTransactions.map((item)=>{
             const transct={
