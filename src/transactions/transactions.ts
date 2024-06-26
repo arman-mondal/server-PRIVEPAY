@@ -351,49 +351,7 @@ router.get('/filter',async(req,res)=>{
     }
 })
 
-router.get('/filter/user',async(req,res)=>{
-    try {
-        const { id } = req.query;
-        const transactions = await getDocs(collection(firestore, 'transactions'));
-        const data = transactions.docs;
-        const hip:any[] = []; // Explicitly define the type of the 'hip' array
-        data.map((item) => {
-            const obj = item.data();
-            
-            hip.push({ id: item.id, ...obj });
-        });
-        const filtered=hip.filter((item:any)=>item.to===id);
-        const users = await getDocs(collection(firestore, 'merchants'));
-        const usersdata = users.docs;
-        const usership: any[] = []; // Explicitly define the type of the 'hip' array
-        usersdata.map((item) => {
-            const obj = item.data();
-            
-            usership.push({ id: item.id, ...obj });
-        });
-        const finaldata:any[]=[];
-        filtered.map((item)=>{
-            const single={
-                id:item.id,
-                from:usership.filter(ite=>ite.id===item.to)[0]
-            }
-            finaldata.push({...item,from :usership.filter(ite=>ite.id===item.to)[0]})
-        })
-        
-        return res.status(200).json({
-            status: true,
-            transactions: finaldata,
-        });
 
-
-    } catch (error) {
-        return res.status(500).json({
-            status: false,
-            message: 'Server Error',
-            error
-        });
-    }
-})
 
 
 
