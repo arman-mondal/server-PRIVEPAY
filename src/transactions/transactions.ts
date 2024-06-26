@@ -375,9 +375,9 @@ router.get('/filter/user',async(req,res)=>{
         filtered.map((item)=>{
             const single={
                 id:item.id,
-                from:usership.filter(ite=>ite.id===item.to)[0].phone
+                from:usership.filter(ite=>ite.id===item.to)[0]
             }
-            finaldata.push({...item,from :usership.filter(ite=>ite.id===item.to)[0]?.phone===null? item.to : usership.filter(ite=>ite.id===item.to)[0]?.phone})
+            finaldata.push({...item,from :usership.filter(ite=>ite.id===item.to)[0]})
         })
         
         return res.status(200).json({
