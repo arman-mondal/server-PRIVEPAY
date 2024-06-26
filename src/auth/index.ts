@@ -53,6 +53,88 @@ router.post('/merchant', async (req, res) => {
         });
     }
 });
+function generateReferCode(): string {
+    const length = 6;
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let referCode = "";
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        referCode += characters[randomIndex];
+    }
+
+    return referCode;
+}
+
+
+router.post('/user/:id', async (req, res) => {
+    try {
+        const {id} = req.params;
+       
+       
+
+
+
+        const currentUser=[]
+        const userRef = await getDocs(collection(firestore, 'users')); 
+        const users=userRef.docs.filter(item=>item.data().id===id);
+        return res.status(200).json({
+            status:true,
+            message:'Created',
+            user:users[0]
+    
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            status: false,
+            message: 'Server Error',
+            error
+        });
+    }
+})
+
+
+router.post('/user/create', async (req, res) => {
+    try {
+        const {phone} = req.body;
+       
+        const referCode = generateReferCode();
+        const userData={
+            balance:0,
+            email:'',
+            name:'',
+            phone:phone,
+            photo:'',
+            referalCode:referCode
+        }
+
+
+
+
+        const userRef = await addDoc(collection(firestore, 'users'), {
+            balance:0,
+            email:'',
+            name:'',
+            phone:phone,
+            photo:'',
+            referalCode:referCode
+
+        }); 
+        return res.status(200).json({
+            status:true,
+            message:'Created',
+    
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            status: false,
+            message: 'Server Error',
+            error
+        });
+    }
+})
 router.put('/update/:id',async(req,res)=>{
     try {
         const docID = req.params.id;
@@ -60,14 +142,17 @@ router.put('/update/:id',async(req,res)=>{
             "description": req.body.description,
             "offers": req.body.offers,
             "category": req.body.category,
-            "gallery": req.body.gallery,
+            "images": req.body.images,
             "address": req.body.address,
+            "offertype":req.body.offertype,
             "reviews": [],
-            "mainImage": req.body.mainImage,
             "upi": req.body.upi,
             "active": true,
-            "openingHours": req.body.openingHours,
+            "openingTime": req.body.openingTime,
+            "closingTime":req.body.closingTime,
+            "name":req.body.name,
         };
+        console.log(construct)
         const docRef = doc(collection(firestore, 'merchants'), docID);
         await updateDoc(docRef, construct);
         return res.status(200).json({
@@ -99,6 +184,59 @@ router.get('/merchants',async(req,res)=>{
         return res.status(200).json({
             status:true,
             merchants:main,
+            message:'Fetched'
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            status: false,
+            message: 'Server Error',
+            error
+        });
+    }
+})
+
+router.get('/promolist',async(req,res)=>{
+    try {
+        const querySnapshot = await getDocs(collection(firestore, 'promotions'));
+        const main: { id: string }[] = []; // Define the type of the 'main' array
+        const data = querySnapshot.docs.map((doc) => {
+            const obj = doc.data();
+            main.push({
+                ...obj,
+                id: doc.id,
+            });
+        });
+        return res.status(200).json({
+            status:true,
+            promos:main,
+            message:'Fetched'
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            status: false,
+            message: 'Server Error',
+            error
+        });
+    }
+})
+router.get('/merchants/:uid',async(req,res)=>{
+    try {
+        const {uid}=req.params;
+        const querySnapshot = await getDocs(collection(firestore, 'merchants'));
+        const main: { id: string }[] = []; // Define the type of the 'main' array
+        const data = querySnapshot.docs.map((doc) => {
+            const obj = doc.data();
+            main.push({
+                ...obj,
+                id: doc.id,
+            });
+        });
+        const merchant=main.filter(item=>item.id===uid);
+        return res.status(200).json({
+            status:true,
+            merchant:merchant[0],
             message:'Fetched'
         })
 
