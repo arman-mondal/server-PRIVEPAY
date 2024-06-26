@@ -37,7 +37,7 @@ const storage = multer.diskStorage({
   
   app.post('/upload', upload.single('file'), (req:any, res) => {
     if (req.file) {
-        const fileUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`;
+        const fileUrl = `https://api.techarman.me/uploads/${req.file.filename}`;
         res.json({ fileUrl: fileUrl });
     } else {
         res.status(400).json({ error: 'No file uploaded' });
