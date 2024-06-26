@@ -20,6 +20,7 @@ router.post('/merchant', async (req, res) => {
         openingTime:0,
         upi:'',
         category:'Events',
+        offertype:'Cashback',
 
     
        
@@ -102,6 +103,40 @@ router.post('/user/:id', async (req, res) => {
 })
 
 
+// router.post('/saved/:id', async (req, res) => {
+//     try {
+//         const {id} = req.params;
+       
+       
+
+
+
+//         const currentUser=[]
+//         const transactionsRef = await getDocs(collection(firestore, 'transactions')); 
+//         const transactions=transactionsRef.docs.filter(item=>item.data().from===id);
+
+
+
+
+
+//         return res.status(200).json({
+//             status:true,
+//             message:'Created',
+//             user:users[0]
+    
+//         })
+        
+//     } catch (error) {
+//         return res.status(500).json({
+//             status: false,
+//             message: 'Server Error',
+//             error
+//         });
+//     }
+// })
+
+
+
 router.post('/user/create', async (req, res) => {
     try {
         const {phone} = req.body;
@@ -142,6 +177,32 @@ router.post('/user/create', async (req, res) => {
         });
     }
 })
+router.put('/user/:id',async(req,res)=>{
+    try {
+        const docID = req.params.id;
+        const {name,photo}=req.body;
+        const construct = {
+           "name":name,
+           "photo":photo
+        };
+        console.log(construct)
+        const docRef = doc(collection(firestore, 'users'), docID);
+        await updateDoc(docRef, construct);
+        return res.status(200).json({
+            status:true,
+            message:'Updated',
+            
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            status: false,
+            message: 'Server Error',
+            error
+        }); 
+    }
+})
+
 router.put('/update/:id',async(req,res)=>{
     try {
         const docID = req.params.id;
