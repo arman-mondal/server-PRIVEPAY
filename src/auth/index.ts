@@ -137,7 +137,7 @@ router.post('/user/:id', async (req, res) => {
 
 
 
-router.post('/user/create', async (req, res) => {
+router.post('/usercreate/', async (req, res) => {
     try {
         const {phone,uid} = req.body;
        
@@ -163,9 +163,19 @@ router.post('/user/create', async (req, res) => {
             referalCode:referCode
 
         }); 
+        
+        console.log({
+            uid:uid,
+            balance:0,
+            email:'',
+            name:'',
+            phone:phone,
+            photo:'',
+            referalCode:referCode
+        })
         return res.status(200).json({
             status:true,
-            message:'Created',
+            message:'a',
     
         })
         
