@@ -139,7 +139,7 @@ router.post('/user/:id', async (req, res) => {
 
 router.post('/user/create', async (req, res) => {
     try {
-        const {phone} = req.body;
+        const {phone,uid} = req.body;
        
         const referCode = generateReferCode();
         const userData={
@@ -154,7 +154,7 @@ router.post('/user/create', async (req, res) => {
 
 
 
-        const userRef = await addDoc(collection(firestore, 'users'), {
+        const userRef = await setDoc(doc(collection(firestore, 'users'), uid), {
             balance:0,
             email:'',
             name:'',
