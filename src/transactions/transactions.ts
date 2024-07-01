@@ -200,6 +200,83 @@ router.post('/promotions', async (req, res) => {
 
 
 
+router.put('/totalsave', async (req, res) => {
+    try {
+        const totalSaveData = req.body;
+        const {id,savedMoney}=totalSaveData;
+        const userRef = doc(firestore, 'users', id);
+
+        const userRe = await getDoc(userRef);
+       const totalSavedMoney=userRe.data()?.totalSaved;
+       const updatedTotalSaved=totalSavedMoney+savedMoney;
+
+        await updateDoc(userRef, {
+            totalSaved: updatedTotalSaved
+        });
+
+
+       
+        return res.status(200).json({
+            status:true,
+            message:'Created',
+    
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            status: false,
+            message: 'Server Error',
+            error
+        });
+    }
+})
+
+router.post('/postreview', async (req, res) => {
+    try {
+        const reviewDATA = req.body;
+        const {id,user,userImg,review,rating}=reviewDATA;
+        const userRef = doc(firestore, 'merchants', id);
+
+        const userRe = await getDoc(userRef);
+       const reviews:any[]=userRe.data()?.reviews;
+       const newReview={
+        user,
+        userImg,
+        review,
+        rating
+       }
+       reviews.push(newReview)
+       console.log(reviews)
+
+       
+
+        await updateDoc(userRef, {
+            reviews: reviews
+        });
+
+
+       
+        return res.status(200).json({
+            status:true,
+            message:'Created',
+            
+    
+        })
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            status: false,
+            message: 'Server Error',
+            error
+        });
+    }
+})
+
+
+
+
+
 router.get('/phone',async(req,res)=>{
     try {
         const { id } = req.query;
