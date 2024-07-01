@@ -120,6 +120,54 @@ router.post('/add', async (req, res) => {
         });
     }
 })
+router.post('/send', async (req, res) => {
+    try {
+        const transaction = req.body;
+       
+        console.log(transaction)
+
+        
+        const promotionRef = await addDoc(collection(firestore, 'transactions'), {
+            amount:transaction.amount,
+            from:transaction.from,
+            timestamp:Date.now(),
+            to:transaction.to,
+            
+        }); 
+        const userRef = doc(firestore, 'merchants', transaction.to);
+        const userSnapshot = await getDoc(userRef);
+        const userRefa = doc(firestore, 'users', transaction.from);
+        const userSnapshota = await getDoc(userRefa);
+        const currentBalance = userSnapshot.data()?.balance;
+        const currentUserbal= userSnapshota.data()?.balance;
+        const newBalance = currentBalance + transaction.amount;
+        const userBalance = currentUserbal - transaction.amount;
+
+        await updateDoc(userRefa, {
+            balance: userBalance
+        });
+        await updateDoc(userRef, {
+            balance: newBalance
+        });
+        await updateDoc(promotionRef, {
+            transactionID: promotionRef.id
+        });
+
+        return res.status(200).json({
+            status:true,
+            message:'Added',
+    
+        })
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            status: false,
+            message: 'Server Error',
+            error
+        });
+    }
+})
 
 
 router.post('/promotions', async (req, res) => {
