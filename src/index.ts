@@ -54,9 +54,9 @@ app.use('/public', express.static(path.join(__dirname, '../public')));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 const options = {
-  key: fs.readFileSync('/ssl/private.key'),
-  cert: fs.readFileSync('/ssl/certificate.crt'),
-  ca: fs.readFileSync('/ssl/ca_bundle.crt')
+  key: fs.readFileSync('./ssl/private.key'),
+  cert: fs.readFileSync('./ssl/certificate.crt'),
+  ca: fs.readFileSync('./ssl/ca_bundle.crt')
 };
 
 https.createServer(options, app).listen(PORT, () => {
