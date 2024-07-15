@@ -21,6 +21,16 @@ router.post('/merchant', async (req, res) => {
         upi:'',
         category:'Events',
         offertype:'Cashback',
+        Price:0,
+        fromTime:0,
+        duration:0,
+        ageLimit:0,
+        availableTickets:0,
+        startingDate:0,
+
+
+
+
 
     
        
@@ -229,6 +239,13 @@ router.put('/update/:id',async(req,res)=>{
             "openingTime": req.body.openingTime,
             "closingTime":req.body.closingTime,
             "name":req.body.name,
+            "Price":Number.isNaN(Number(req.body.price)) ? 0: Number(req.body.price) ,
+            fromTime:Number(req.body.fromTime),
+            duration:Number(req.body.duration),
+            ageLimit:Number(req.body.ageLimit),
+            availableTickets:Number(req.body.availableTickets),
+            startingDate:Number(req.body.startingDate),
+            
         };
         console.log(construct)
         const docRef = doc(collection(firestore, 'merchants'), docID);
@@ -312,6 +329,7 @@ router.get('/merchants/:uid',async(req,res)=>{
             });
         });
         const merchant=main.filter(item=>item.id===uid);
+        console.log(merchant[0])
         return res.status(200).json({
             status:true,
             merchant:merchant[0],

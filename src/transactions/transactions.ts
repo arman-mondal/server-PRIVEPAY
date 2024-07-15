@@ -142,12 +142,18 @@ router.post('/send', async (req, res) => {
         const currentUserbal= userSnapshota.data()?.balance;
         const newBalance = currentBalance + transaction.amount;
         const userBalance = currentUserbal - transaction.amount;
+        const availableTickets=userSnapshot.data()?.availableTickets;
+        const isEvent=userSnapshot.data()?.category==='Events';
+        const finalTickets=availableTickets-1;
+        console.log(finalTickets)
 
         await updateDoc(userRefa, {
-            balance: userBalance
+            balance: userBalance,
         });
         await updateDoc(userRef, {
-            balance: newBalance
+            balance: newBalance,
+            availableTickets:isEvent ? finalTickets : 0
+            
         });
         await updateDoc(promotionRef, {
             transactionID: promotionRef.id
