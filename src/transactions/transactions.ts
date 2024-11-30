@@ -519,7 +519,7 @@ router.get('/leaderboard/',async(req,res)=>{
             const data={
                 id:item.id,
                 
-                name:item?.name===''? item.phone?.slice(0, 7) + "*****",
+                name:item?.name==="" || item.name===" "? item.phone?.slice(0, 7) + "*****",
                 phone:item.phone,
                 balance:item.balance,
                 
